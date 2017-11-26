@@ -14,6 +14,12 @@ var announcement = [];
 var announcementAutor = [];
 var announcementOffer = [];
 var announcementLocation = [];
+var fragment = document.createDocumentFragment();
+var mapPins = document.querySelector('.map__pins');
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
+var template = document.getElementsByTagName('template');
+var beforeElement = document.querySelector('.map__filters-container');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -48,8 +54,7 @@ for (var i = 0; i < 8; i++) {
   var imageDigit = getRandomElement(IMAGES);
   announcementAutor[i] = {
     avatar: 'img/avatars/user' + imageDigit + '.png'
-  }
-
+  };
   announcementOffer[i] = {
     title: typeAndTitle[0],
     address: x + ', ' + y,
@@ -67,5 +72,23 @@ for (var i = 0; i < 8; i++) {
     x: x,
     y: y
   };
+  announcement = {
+    author: announcementAutor,
+    offer: announcementOffer,
+    location: announcementLocation
+  };
+  var newElement = document.createElement('button');
+  newElement.className = 'map__pin';
+  newElement.style = 'left: ' + (x + 40) + 'px; top: ' + (y + 20) + 'px;';
+  newElement.innerHTML = '<img src=\"' + announcementAutor[i].avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  fragment.appendChild(newElement);
 }
-console.log(announcementOffer)
+mapPins.appendChild(fragment);
+
+newElement = document.createElement('div');
+newElement.className = 'map__info';
+newElement.innerHTML = template;
+
+fragment = document.createDocumentFragment();
+fragment.appendChild(newElement);
+fragment.insertBefore(beforeElement, null);
