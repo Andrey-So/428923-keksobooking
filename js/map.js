@@ -13,8 +13,6 @@ var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-// var template = document.getElementsByTagName('template');
-// var beforeElement = document.querySelector('.map__filters-container');
 var count = 8;
 
 function getRandomInt(min, max) {
@@ -28,7 +26,7 @@ function getRandomElement(array) {
   return ret;
 }
 
-var createFeatures = function () {
+var getFeatures = function () {
   var features = [];
   var featuresCopy = FEATURES.slice();
   var featuresCount = getRandomInt(1, featuresCopy.length);
@@ -38,7 +36,7 @@ var createFeatures = function () {
   return features;
 };
 
-var createAnnouncement = function () {
+var getAnnouncement = function () {
   var x = getRandomInt(300, 900);
   var y = getRandomInt(100, 500);
   var price = getRandomInt(1000, 1000000);
@@ -48,7 +46,7 @@ var createAnnouncement = function () {
   var checkout = getRandomInt(12, 14) + ':00';
   var typeAndTitle = getRandomElement(TITLES);
   var imageDigit = getRandomElement(IMAGES);
-  var features = createFeatures();
+  var features = getFeatures();
   return {
     author: {
       avatar: 'img/avatars/user' + imageDigit + '.png'
@@ -73,24 +71,32 @@ var createAnnouncement = function () {
   };
 };
 
-var createAnnouncements = function (thisCount) {
+var getAnnouncements = function (thisCount) {
   var announcements = [];
   for (var i = 0; i < thisCount; i++) {
-    announcements.push(createAnnouncement());
+    announcements.push(getAnnouncement());
   }
   return announcements;
 };
 
-var announcements = createAnnouncements(count);
+var getPin = function () {
+  var pin = document.createElement('button');
+  pin.className = 'map__pin';
+  pin.style.left = announcements[i].location.x - 20 + 'px';
+  pin.style.top = announcements[i].location.y + 40 + 'px';
+  pin.innerHTML = '<img src=\"' + announcements[i].author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  return pin;
+};
 
-for (var i = 0; i < 8; i++) {
-  var mapPin = document.createElement('button');
-  mapPin.className = 'map__pin';
-  mapPin.style.left = announcements[i].location.x - 20 + 'px';
-  mapPin.style.top = announcements[i].location.y + 40 + 'px';
-  mapPin.innerHTML = '<img src=\"' + announcements[i].author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+var announcements = getAnnouncements(count);
+
+for (var i = 0; i < count; i++) {
+  var mapPin = getPin();
   mapPins.appendChild(mapPin);
 }
+
+// var template = document.getElementsByTagName('template');
+// var beforeElement = document.querySelector('.map__filters-container');
 
 // var mapInfo = document.createElement('div');
 // mapInfo.className = 'map__info';
