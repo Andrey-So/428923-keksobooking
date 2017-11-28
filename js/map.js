@@ -14,10 +14,9 @@ var announcement = [];
 var announcementAuthor = [];
 var announcementOffer = [];
 var announcementLocation = [];
-var fragment = document.createDocumentFragment();
 var mapPins = document.querySelector('.map__pins');
-var parent = document.querySelector('.map');
-parent.classList.remove('map--faded');
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 var template = document.getElementsByTagName('template');
 var beforeElement = document.querySelector('.map__filters-container');
 
@@ -73,41 +72,33 @@ for (var i = 0; i < 8; i++) {
     offer: announcementOffer,
     location: announcementLocation
   };
-  var newElement = document.createElement('button');
-  newElement.className = 'map__pin';
-  newElement.style = 'left: ' + (x + 40) + 'px; top: ' + (y + 20) + 'px;';
-  newElement.innerHTML = '<img src=\"' + announcementAuthor[i].avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
-  fragment.appendChild(newElement);
+  var mapPin = document.createElement('button');
+  mapPin.className = 'map__pin';
+  mapPin.style.left = announcement.location[i].x - 20 + 'px';
+  mapPin.style.top = announcement.location[i].y + 40 + 'px';
+  mapPin.innerHTML = '<img src=\"' + announcementAuthor[i].avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  mapPins.appendChild(mapPin);
 }
-mapPins.appendChild(fragment);
 
-newElement = document.createElement('div');
-newElement.className = 'map__info';
-newElement.innerHTML = template[0].innerHTML;
-var replaceElement = newElement.getElementsByTagName('h3');
-replaceElement[0].innerText = announcement.offer[0].title;
-replaceElement = newElement.getElementsByTagName('small');
-replaceElement[0].innerText = announcement.offer[0].address;
-replaceElement = newElement.querySelector('.popup__price');
-replaceElement.innerText = announcement.offer[0].price + '₽/ночь';
-replaceElement = newElement.getElementsByTagName('h4');
-replaceElement[0].innerText = announcement.offer[0].type;
-replaceElement = newElement.getElementsByTagName('p')[2];
-replaceElement.innerText = announcement.offer[0].rooms + ' для ' + announcement.offer[0].guests + ' гостей';
-replaceElement = newElement.getElementsByTagName('p')[3];
-replaceElement.innerText = 'Заезд после ' + announcement.offer[0].checkin + ', выезд до ' + announcement.offer[0].checkout;
-var parentFeatures = newElement.querySelector('.popup__features');
-var deleteElements = newElement.querySelectorAll('.feature');
+var mapInfo = document.createElement('div');
+mapInfo.className = 'map__info';
+mapInfo.innerHTML = template[0].innerHTML;
+mapInfo.querySelector('h3').textContent = announcement.offer[0].title;
+mapInfo.querySelector('small').textContent = announcement.offer[0].address;
+mapInfo.querySelector('.popup__price').innerHTML = announcement.offer[0].price + ' &#x20bd;/ночь';
+mapInfo.querySelector('h4').textContent = announcement.offer[0].type;
+mapInfo.querySelector('h4 + p').textContent = announcement.offer[0].rooms + ' для ' + announcement.offer[0].guests + ' гостей';
+mapInfo.querySelector('h4 + p + p').textContent = 'Заезд после ' + announcement.offer[0].checkin + ', выезд до ' + announcement.offer[0].checkout;
+var mapFeatures = mapInfo.querySelector('.popup__features');
+var deleteElements = mapInfo.querySelectorAll('.feature');
 deleteElements.forEach(function (element, index) {
-  parentFeatures.removeChild(deleteElements[index]);
+  mapFeatures.removeChild(deleteElements[index]);
 });
 announcement.offer[0].features.forEach(function (feature) {
   var newLi = document.createElement('li');
   newLi.className = 'feature feature--' + feature;
-  parentFeatures.appendChild(newLi);
+  mapFeatures.appendChild(newLi);
 });
-replaceElement = newElement.getElementsByTagName('p')[4];
-replaceElement.innerText = announcement.offer[0].description;
-parent.insertBefore(newElement, beforeElement);
-replaceElement = newElement.querySelector('.popup__avatar');
-replaceElement.outerHTML = '<img src=\"' + announcement.author[0].avatar + '\" class=\"popup__avatar\" width=\"70\" height=\"70\">';
+mapInfo.querySelector('.popup__features + p').textContent = announcement.offer[0].description;
+mapInfo.querySelector('.popup__avatar').src = announcement.author[0].avatar;
+map.insertBefore(mapInfo, beforeElement);
