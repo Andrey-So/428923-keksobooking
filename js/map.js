@@ -10,15 +10,11 @@ var TITLES = [['Большая уютная квартира', 'flat'],
   ['Неуютное бунгало по колено в воде', 'bungalo']];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
-// var announcement = [];
-// var announcementAuthor = [];
-// var announcementOffer = [];
-// var announcementLocation = [];
 var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-var template = document.getElementsByTagName('template');
-var beforeElement = document.querySelector('.map__filters-container');
+// var template = document.getElementsByTagName('template');
+// var beforeElement = document.querySelector('.map__filters-container');
 var count = 8;
 
 function getRandomInt(min, max) {
@@ -32,6 +28,16 @@ function getRandomElement(array) {
   return ret;
 }
 
+var createFeatures = function () {
+  var features = [];
+  var featuresCopy = FEATURES.slice();
+  var featuresCount = getRandomInt(1, featuresCopy.length);
+  for (var j = 0; j < featuresCount; j++) {
+    features.push(getRandomElement(featuresCopy));
+  }
+  return features;
+};
+
 var createAnnouncement = function () {
   var x = getRandomInt(300, 900);
   var y = getRandomInt(100, 500);
@@ -42,13 +48,7 @@ var createAnnouncement = function () {
   var checkout = getRandomInt(12, 14) + ':00';
   var typeAndTitle = getRandomElement(TITLES);
   var imageDigit = getRandomElement(IMAGES);
-
-  var features = [];
-  var featuresCopy = FEATURES.slice();
-  var featuresCount = getRandomInt(1, featuresCopy.length);
-  for (var j = 0; j < featuresCount; j++) {
-    features.push(getRandomElement(featuresCopy));
-  }
+  var features = createFeatures();
   return {
     author: {
       avatar: 'img/avatars/user' + imageDigit + '.png'
@@ -73,9 +73,9 @@ var createAnnouncement = function () {
   };
 };
 
-var createAnnouncements = function (count) {
+var createAnnouncements = function (thisCount) {
   var announcements = [];
-  for (var i = 0; i < count; i++) {
+  for (var i = 0; i < thisCount; i++) {
     announcements.push(createAnnouncement());
   }
   return announcements;
