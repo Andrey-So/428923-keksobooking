@@ -96,30 +96,29 @@ var createInfo = function () {
   var template = document.getElementsByTagName('template');
   var beforeElement = document.querySelector('.map__filters-container');
   var mapInfo = document.createElement('div');
-  var offer = announcements[0].offer;
-  var author = announcements[0].author;
+  var thisAnnouncement = announcements[0];
   mapInfo.className = 'map__info';
   mapInfo.innerHTML = template[0].innerHTML;
-  mapInfo.querySelector('h3').textContent = offer.title;
-  mapInfo.querySelector('small').textContent = offer.address;
-  mapInfo.querySelector('.popup__price').innerHTML = offer.price + ' &#x20bd;/ночь';
-  mapInfo.querySelector('h4').textContent = offer.type;
-  mapInfo.querySelector('h4 + p').textContent = offer.rooms + ' для ' + offer.guests + ' гостей';
-  mapInfo.querySelector('h4 + p + p').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
+  mapInfo.querySelector('h3').textContent = thisAnnouncement.offer.title;
+  mapInfo.querySelector('small').textContent = thisAnnouncement.offer.address;
+  mapInfo.querySelector('.popup__price').innerHTML = thisAnnouncement.offer.price + ' &#x20bd;/ночь';
+  mapInfo.querySelector('h4').textContent = thisAnnouncement.offer.type;
+  mapInfo.querySelector('h4 + p').textContent = thisAnnouncement.offer.rooms + ' для ' + thisAnnouncement.offer.guests + ' гостей';
+  mapInfo.querySelector('h4 + p + p').textContent = 'Заезд после ' + thisAnnouncement.offer.checkin + ', выезд до ' + thisAnnouncement.offer.checkout;
   var mapFeatures = mapInfo.querySelector('.popup__features');
   var deleteElements = mapInfo.querySelectorAll('.feature');
   deleteElements.forEach(function (element, index) {
     mapFeatures.removeChild(deleteElements[index]);
   });
-  offer.features.forEach(function (feature) {
+  thisAnnouncement.offer.features.forEach(function (feature) {
     if (feature) {
       var newLi = document.createElement('li');
       newLi.className = 'feature feature--' + feature;
       mapFeatures.appendChild(newLi);
     }
   });
-  mapInfo.querySelector('.popup__features + p').textContent = offer.description;
-  mapInfo.querySelector('.popup__avatar').src = author.avatar;
+  mapInfo.querySelector('.popup__features + p').textContent = thisAnnouncement.offer.description;
+  mapInfo.querySelector('.popup__avatar').src = thisAnnouncement.author.avatar;
   map.insertBefore(mapInfo, beforeElement);
 };
 
