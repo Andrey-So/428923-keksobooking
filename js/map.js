@@ -91,34 +91,38 @@ var getPin = function () {
 
 var announcements = getAnnouncements(count);
 
+var createInfo = function () {
+  var template = document.getElementsByTagName('template');
+  var beforeElement = document.querySelector('.map__filters-container');
+  var mapInfo = document.createElement('div');
+  mapInfo.className = 'map__info';
+  mapInfo.innerHTML = template[0].innerHTML;
+  mapInfo.querySelector('h3').textContent = announcements[0].offer.title;
+  mapInfo.querySelector('small').textContent = announcements[0].offer.address;
+  mapInfo.querySelector('.popup__price').innerHTML = announcements[0].offer.price + ' &#x20bd;/ночь';
+  mapInfo.querySelector('h4').textContent = announcements[0].offer.type;
+  mapInfo.querySelector('h4 + p').textContent = announcements[0].offer.rooms + ' для ' + announcements[0].offer.guests + ' гостей';
+  mapInfo.querySelector('h4 + p + p').textContent = 'Заезд после ' + announcements[0].offer.checkin + ', выезд до ' + announcements[0].offer.checkout;
+  var mapFeatures = mapInfo.querySelector('.popup__features');
+  var deleteElements = mapInfo.querySelectorAll('.feature');
+  deleteElements.forEach(function (element, index) {
+    mapFeatures.removeChild(deleteElements[index]);
+  });
+  announcements[0].offer.features.forEach(function (feature) {
+    if (feature) {
+      var newLi = document.createElement('li');
+      newLi.className = 'feature feature--' + feature;
+      mapFeatures.appendChild(newLi);
+    }
+  });
+  mapInfo.querySelector('.popup__features + p').textContent = announcements[0].offer.description;
+  mapInfo.querySelector('.popup__avatar').src = announcements[0].author.avatar;
+  map.insertBefore(mapInfo, beforeElement);
+};
+
 for (var i = 0; i < count; i++) {
   var mapPin = getPin();
   mapPins.appendChild(mapPin);
 }
 
-var template = document.getElementsByTagName('template');
-var beforeElement = document.querySelector('.map__filters-container');
-var mapInfo = document.createElement('div');
-mapInfo.className = 'map__info';
-mapInfo.innerHTML = template[0].innerHTML;
-mapInfo.querySelector('h3').textContent = announcements[0].offer.title;
-mapInfo.querySelector('small').textContent = announcements[0].offer.address;
-mapInfo.querySelector('.popup__price').innerHTML = announcements[0].offer.price + ' &#x20bd;/ночь';
-mapInfo.querySelector('h4').textContent = announcements[0].offer.type;
-mapInfo.querySelector('h4 + p').textContent = announcements[0].offer.rooms + ' для ' + announcements[0].offer.guests + ' гостей';
-mapInfo.querySelector('h4 + p + p').textContent = 'Заезд после ' + announcements[0].offer.checkin + ', выезд до ' + announcements[0].offer.checkout;
-var mapFeatures = mapInfo.querySelector('.popup__features');
-var deleteElements = mapInfo.querySelectorAll('.feature');
-deleteElements.forEach(function (element, index) {
-  mapFeatures.removeChild(deleteElements[index]);
-});
-announcements[0].offer.features.forEach(function (feature) {
-  if (feature) {
-    var newLi = document.createElement('li');
-    newLi.className = 'feature feature--' + feature;
-    mapFeatures.appendChild(newLi);
-  }
-});
-mapInfo.querySelector('.popup__features + p').textContent = announcements[0].offer.description;
-mapInfo.querySelector('.popup__avatar').src = announcements[0].author.avatar;
-map.insertBefore(mapInfo, beforeElement);
+createInfo();
