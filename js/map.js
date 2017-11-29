@@ -82,10 +82,11 @@ var getAnnouncements = function (thisCount) {
 
 var getPin = function () {
   var pin = document.createElement('button');
+  var data = announcements[i];
   pin.className = 'map__pin';
-  pin.style.left = announcements[i].location.x - 20 + 'px';
-  pin.style.top = announcements[i].location.y + 40 + 'px';
-  pin.innerHTML = '<img src=\"' + announcements[i].author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  pin.style.left = data.location.x - 20 + 'px';
+  pin.style.top = data.location.y + 40 + 'px';
+  pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
   return pin;
 };
 
@@ -96,6 +97,7 @@ var createInfo = function () {
   var beforeElement = document.querySelector('.map__filters-container');
   var mapInfo = document.createElement('div');
   var offer = announcements[0].offer;
+  var author = announcements[0].author;
   mapInfo.className = 'map__info';
   mapInfo.innerHTML = template[0].innerHTML;
   mapInfo.querySelector('h3').textContent = offer.title;
@@ -117,7 +119,7 @@ var createInfo = function () {
     }
   });
   mapInfo.querySelector('.popup__features + p').textContent = offer.description;
-  mapInfo.querySelector('.popup__avatar').src = announcements[0].author.avatar;
+  mapInfo.querySelector('.popup__avatar').src = author.avatar;
   map.insertBefore(mapInfo, beforeElement);
 };
 
