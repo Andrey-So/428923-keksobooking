@@ -10,9 +10,10 @@ var TITLES = [['Большая уютная квартира', 'flat'],
   ['Неуютное бунгало по колено в воде', 'bungalo']];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
-var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+var mapPins = document.querySelector('.map__pins');
+var mapPinMain = document.querySelector('.map__pin--main');
+var noticeForm = document.querySelector('.notice__form');
 var count = 8;
 
 function getRandomInt(min, max) {
@@ -122,9 +123,17 @@ var createInfo = function () {
   map.insertBefore(mapInfo, beforeElement);
 };
 
-for (var i = 0; i < count; i++) {
-  var mapPin = getPin();
-  mapPins.appendChild(mapPin);
+var activation = function () {
+  map.classList.remove('map--faded');
+  noticeForm.classList.remove('notice__form--disabled');
+  mapPinMain.removeEventListener('mouseup', activation);
 }
 
-createInfo();
+mapPinMain.addEventListener('mouseup', activation);
+
+// for (var i = 0; i < count; i++) {
+//   var mapPin = getPin();
+//   mapPins.appendChild(mapPin);
+// }
+//
+// createInfo();
