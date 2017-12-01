@@ -161,7 +161,6 @@ var activateNewPin = function (evt) {
 };
 
 var deactiveteOldPin = function () {
-  console.log(1234);
   if (previousActivePin) {
     previousActivePin.remove('map__pin--active');
     removeMapInfo();
@@ -188,4 +187,3 @@ var activation = function () {
 
 mapPinMain.addEventListener('mouseup', activation);
 mapPins.addEventListener('click', onPinClick);
-
