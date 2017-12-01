@@ -10,6 +10,7 @@ var TITLES = [['Большая уютная квартира', 'flat'],
   ['Неуютное бунгало по колено в воде', 'bungalo']];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
+var ESC_KEYCODE = 27;
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -89,16 +90,17 @@ var getPin = function (i) {
   pin.style.left = data.location.x - 20 + 'px';
   pin.style.top = data.location.y + 40 + 'px';
   pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  pin.id = i;
   return pin;
 };
 
 var announcements = getAnnouncements(count);
 
-var createInfo = function () {
+var createMapInfo = function (i) {
   var template = document.getElementsByTagName('template');
   var beforeElement = document.querySelector('.map__filters-container');
   var mapInfo = document.createElement('div');
-  var thisAnnouncement = announcements[0];
+  var thisAnnouncement = announcements[i];
   mapInfo.className = 'map__info';
   mapInfo.innerHTML = template[0].innerHTML;
   mapInfo.querySelector('h3').textContent = thisAnnouncement.offer.title;
@@ -122,6 +124,17 @@ var createInfo = function () {
   mapInfo.querySelector('.popup__features + p').textContent = thisAnnouncement.offer.description;
   mapInfo.querySelector('.popup__avatar').src = thisAnnouncement.author.avatar;
   map.insertBefore(mapInfo, beforeElement);
+  document.addEventListener('keydown', mapInfoClose);
+  var popupClose = document.querySelector('.popup__close');
+  popupClose.addEventListener('click', mapInfoClose);
+};
+
+var mapInfoClose = function (evt) {
+  if ((evt.keyCode === ESC_KEYCODE) || (evt.type === 'click')) {
+    deactiveteOldPin();
+    document.removeEventListener('keydown', mapInfoClose);
+    document.removeEventListener('click', mapInfoClose);
+  }
 };
 
 var showPins = function () {
@@ -131,15 +144,39 @@ var showPins = function () {
   }
 };
 
-var onPinClick = function (evt) {
-  var currentActivePin = evt.target.parentElement.classList;
+var removeMapInfo = function () {
+  var mapInfo = document.querySelector('.map__info');
+  if (mapInfo) {
+    map.removeChild(mapInfo);
+  }
+};
+
+var activateNewPin = function (evt) {
+  if (evt.classList[0] === 'map__pin') {
+    evt.classList.add('map__pin--active');
+    if (evt.id) {
+      createMapInfo(evt.id);
+    }
+  }
+};
+
+var deactiveteOldPin = function () {
+  console.log(1234);
   if (previousActivePin) {
     previousActivePin.remove('map__pin--active');
+    removeMapInfo();
   }
-  if (currentActivePin[0] === 'map__pin') {
-    currentActivePin.add('map__pin--active');
-    previousActivePin = evt.target.parentElement.classList;
+};
+
+var onPinClick = function (evt) {
+  if (evt.target.localName === 'img') {
+    var currentActivePin = evt.target.parentElement;
+  } else {
+    currentActivePin = evt.target;
   }
+  deactiveteOldPin();
+  activateNewPin(currentActivePin);
+  previousActivePin = currentActivePin.classList;
 };
 
 var activation = function () {
@@ -152,4 +189,3 @@ var activation = function () {
 mapPinMain.addEventListener('mouseup', activation);
 mapPins.addEventListener('click', onPinClick);
 
-// createInfo();
