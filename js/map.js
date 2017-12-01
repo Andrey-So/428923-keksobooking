@@ -15,6 +15,7 @@ var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var noticeForm = document.querySelector('.notice__form');
 var count = 8;
+var previousActivePin;
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -81,7 +82,7 @@ var getAnnouncements = function (thisCount) {
   return announcements;
 };
 
-var getPin = function () {
+var getPin = function (i) {
   var pin = document.createElement('button');
   var data = announcements[i];
   pin.className = 'map__pin';
@@ -123,17 +124,32 @@ var createInfo = function () {
   map.insertBefore(mapInfo, beforeElement);
 };
 
+var showPins = function () {
+  for (var i = 0; i < count; i++) {
+    var mapPin = getPin(i);
+    mapPins.appendChild(mapPin);
+  }
+};
+
+var onPinClick = function (evt) {
+  var currentActivePin = evt.target.parentElement.classList;
+  if (previousActivePin) {
+    previousActivePin.remove('map__pin--active');
+  }
+  if (currentActivePin[0] === 'map__pin') {
+    currentActivePin.add('map__pin--active');
+    previousActivePin = evt.target.parentElement.classList;
+  }
+};
+
 var activation = function () {
   map.classList.remove('map--faded');
   noticeForm.classList.remove('notice__form--disabled');
   mapPinMain.removeEventListener('mouseup', activation);
-}
+  showPins();
+};
 
 mapPinMain.addEventListener('mouseup', activation);
+mapPins.addEventListener('click', onPinClick);
 
-// for (var i = 0; i < count; i++) {
-//   var mapPin = getPin();
-//   mapPins.appendChild(mapPin);
-// }
-//
 // createInfo();
