@@ -15,7 +15,7 @@ var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var noticeForm = document.querySelector('.notice__form');
-var count = 8;
+var DEFAULT_COUNT = 8;
 var previousActivePin;
 
 function getRandomInt(min, max) {
@@ -94,7 +94,7 @@ var getPin = function (i) {
   return pin;
 };
 
-var announcements = getAnnouncements(count);
+var announcements = getAnnouncements(DEFAULT_COUNT);
 
 var createMapInfo = function (i) {
   var template = document.getElementsByTagName('template');
@@ -138,7 +138,7 @@ var mapInfoClose = function (evt) {
 };
 
 var showPins = function () {
-  for (var i = 0; i < count; i++) {
+  for (var i = 0; i < DEFAULT_COUNT; i++) {
     var mapPin = getPin(i);
     mapPins.appendChild(mapPin);
   }
