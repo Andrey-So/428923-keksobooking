@@ -168,8 +168,9 @@ var deactiveteOldPin = function () {
 };
 
 var onPinClick = function (evt) {
+  var currentActivePin;
   if (evt.target.localName === 'img') {
-    var currentActivePin = evt.target.parentElement;
+    currentActivePin = evt.target.parentElement;
   } else {
     currentActivePin = evt.target;
   }
