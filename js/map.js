@@ -10,10 +10,13 @@ var TITLES = [['Большая уютная квартира', 'flat'],
   ['Неуютное бунгало по колено в воде', 'bungalo']];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
-var mapPins = document.querySelector('.map__pins');
+var ESC_KEYCODE = 27;
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-var count = 8;
+var mapPins = document.querySelector('.map__pins');
+var mapPinMain = document.querySelector('.map__pin--main');
+var noticeForm = document.querySelector('.notice__form');
+var DEFAULT_COUNT = 8;
+var previousActivePin;
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -80,23 +83,24 @@ var getAnnouncements = function (thisCount) {
   return announcements;
 };
 
-var getPin = function () {
+var getPin = function (i) {
   var pin = document.createElement('button');
   var data = announcements[i];
   pin.className = 'map__pin';
   pin.style.left = data.location.x - 20 + 'px';
   pin.style.top = data.location.y + 40 + 'px';
   pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+  pin.id = i;
   return pin;
 };
 
-var announcements = getAnnouncements(count);
+var announcements = getAnnouncements(DEFAULT_COUNT);
 
-var createInfo = function () {
+var createMapInfo = function (i) {
   var template = document.getElementsByTagName('template');
   var beforeElement = document.querySelector('.map__filters-container');
   var mapInfo = document.createElement('div');
-  var thisAnnouncement = announcements[0];
+  var thisAnnouncement = announcements[i];
   mapInfo.className = 'map__info';
   mapInfo.innerHTML = template[0].innerHTML;
   mapInfo.querySelector('h3').textContent = thisAnnouncement.offer.title;
@@ -120,11 +124,67 @@ var createInfo = function () {
   mapInfo.querySelector('.popup__features + p').textContent = thisAnnouncement.offer.description;
   mapInfo.querySelector('.popup__avatar').src = thisAnnouncement.author.avatar;
   map.insertBefore(mapInfo, beforeElement);
+  document.addEventListener('keydown', mapInfoClose);
+  var popupClose = document.querySelector('.popup__close');
+  popupClose.addEventListener('click', mapInfoClose);
 };
 
-for (var i = 0; i < count; i++) {
-  var mapPin = getPin();
-  mapPins.appendChild(mapPin);
-}
+var mapInfoClose = function (evt) {
+  if ((evt.keyCode === ESC_KEYCODE) || (evt.type === 'click')) {
+    deactiveteOldPin();
+    document.removeEventListener('keydown', mapInfoClose);
+    document.removeEventListener('click', mapInfoClose);
+  }
+};
 
-createInfo();
+var showPins = function () {
+  for (var i = 0; i < DEFAULT_COUNT; i++) {
+    var mapPin = getPin(i);
+    mapPins.appendChild(mapPin);
+  }
+};
+
+var removeMapInfo = function () {
+  var mapInfo = document.querySelector('.map__info');
+  if (mapInfo) {
+    map.removeChild(mapInfo);
+  }
+};
+
+var activateNewPin = function (evt) {
+  if (evt.classList[0] === 'map__pin') {
+    evt.classList.add('map__pin--active');
+    if (evt.id) {
+      createMapInfo(evt.id);
+    }
+  }
+};
+
+var deactiveteOldPin = function () {
+  if (previousActivePin) {
+    previousActivePin.remove('map__pin--active');
+    removeMapInfo();
+  }
+};
+
+var onPinClick = function (evt) {
+  var currentActivePin;
+  if (evt.target.localName === 'img') {
+    currentActivePin = evt.target.parentElement;
+  } else {
+    currentActivePin = evt.target;
+  }
+  deactiveteOldPin();
+  activateNewPin(currentActivePin);
+  previousActivePin = currentActivePin.classList;
+};
+
+var activation = function () {
+  map.classList.remove('map--faded');
+  noticeForm.classList.remove('notice__form--disabled');
+  mapPinMain.removeEventListener('mouseup', activation);
+  showPins();
+};
+
+mapPinMain.addEventListener('mouseup', activation);
+mapPins.addEventListener('click', onPinClick);
