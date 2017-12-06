@@ -17,6 +17,12 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var noticeForm = document.querySelector('.notice__form');
 var DEFAULT_COUNT = 8;
 var previousActivePin;
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var typeOfHousing = document.querySelector('#type');
+var minPrice = document.querySelector('#price');
+var capacity = document.querySelector('#capacity');
+var roomNubmer = document.querySelector('#room_number');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -186,5 +192,65 @@ var activation = function () {
   showPins();
 };
 
+var capacityShow = function (zero, one, two, three) {
+  capacity[0].hidden = !zero;
+  capacity[1].hidden = !one;
+  capacity[2].hidden = !two;
+  capacity[3].hidden = !three;
+  var i = 0;
+  do {
+    i++;
+  } while (capacity[i].hidden === true);
+  capacity.selectedIndex = i;
+};
+
 mapPinMain.addEventListener('mouseup', activation);
 mapPins.addEventListener('click', onPinClick);
+capacityShow(false, false, true, false);
+
+timeIn.addEventListener('change', function () {
+  timeOut.selectedIndex = timeIn.selectedIndex;
+}, false);
+
+timeOut.addEventListener('change', function () {
+  timeIn.selectedIndex = timeOut.selectedIndex;
+}, false);
+
+typeOfHousing.addEventListener('change', function () {
+  switch (typeOfHousing.selectedIndex) {
+    case 0:
+      minPrice.min = 1000;
+      break;
+    case 1:
+      minPrice.min = 0;
+      break;
+    case 2:
+      minPrice.min = 5000;
+      break;
+    case 3:
+      minPrice.min = 10000;
+      break;
+    default:
+      minPrice.min = 0;
+  }
+});
+
+roomNubmer.addEventListener('change', function () {
+  switch (roomNubmer.selectedIndex) {
+    case 0:
+      capacityShow(false, false, true, false);
+      break;
+    case 1:
+      capacityShow(false, true, true, false);
+      break;
+    case 2:
+      capacityShow(true, true, true, false);
+      break;
+    case 3:
+      capacityShow(false, false, false, true);
+      break;
+    default:
+      capacityShow(true, true, true, true);
+      break;
+  }
+});
