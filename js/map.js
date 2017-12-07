@@ -24,6 +24,7 @@ var minPrice = document.querySelector('#price');
 var capacity = document.querySelector('#capacity');
 var roomNubmer = document.querySelector('#room_number');
 
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -192,21 +193,42 @@ var activation = function () {
   showPins();
 };
 
-var capacityShow = function (zero, one, two, three) {
-  capacity[0].hidden = !zero;
-  capacity[1].hidden = !one;
-  capacity[2].hidden = !two;
-  capacity[3].hidden = !three;
-  var i = 0;
-  do {
-    i++;
-  } while (capacity[i].hidden === true);
-  capacity.selectedIndex = i;
+var ROOMS = {
+  0: [2],
+  1: [1, 2],
+  2: [0, 1, 2],
+  3: [4],
+  4: [0, 1, 2, 3]
+};
+
+
+var capacityShow = function (array) {
+  // capacity[0].hidden = !zero;
+  // capacity[1].hidden = !one;
+  // capacity[2].hidden = !two;
+  // capacity[3].hidden = !three;
+  // var i = 0;
+  // do {
+  //   i++;
+  // } while (capacity[i].hidden === true);
+  // capacity.selectedIndex = i;
+  // for (var i = 0; i <= capacity.length; i++) {
+  //   for (var j = 0; j <= array.length; j++) {
+  //     if (array[j] === i) {
+  //       capacity[i].hidden = false;
+  //       console.log(i);
+  //     } else {
+  //       // console.log(i);
+  //       capacity[i].hidden = true;
+  //     }
+  //   }
+  // }
+  // console.log(array);
 };
 
 mapPinMain.addEventListener('mouseup', activation);
 mapPins.addEventListener('click', onPinClick);
-capacityShow(false, false, true, false);
+capacityShow(ROOMS[0]);
 
 timeIn.addEventListener('change', function () {
   timeOut.selectedIndex = timeIn.selectedIndex;
@@ -236,21 +258,5 @@ typeOfHousing.addEventListener('change', function () {
 });
 
 roomNubmer.addEventListener('change', function () {
-  switch (roomNubmer.selectedIndex) {
-    case 0:
-      capacityShow(false, false, true, false);
-      break;
-    case 1:
-      capacityShow(false, true, true, false);
-      break;
-    case 2:
-      capacityShow(true, true, true, false);
-      break;
-    case 3:
-      capacityShow(false, false, false, true);
-      break;
-    default:
-      capacityShow(true, true, true, true);
-      break;
-  }
+  capacityShow(ROOMS[roomNubmer.selectedIndex]);
 });
