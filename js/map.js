@@ -203,6 +203,7 @@ var capacityShow = function (array) {
   for (var i = 0; i < capacity.length; i++) {
     capacity[i].hidden = ~array.indexOf(i) >= 0;
   }
+  capacity.selectedIndex = array[0];
 };
 
 mapPinMain.addEventListener('mouseup', activation);
