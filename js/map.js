@@ -203,13 +203,7 @@ var ROOMS = {
 
 var capacityShow = function (array) {
   for (var i = 0; i < capacity.length; i++) {
-    capacity[i].hidden = true;
-    for (var j = 0; j <= array.length; j++) {
-      if (array[j] === i) {
-        capacity[i].hidden = false;
-        capacity.selectedIndex = i;
-      }
-    }
+    capacity[i].hidden = ~array.indexOf(i) >= 0;
   }
 };
 
