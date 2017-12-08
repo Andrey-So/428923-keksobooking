@@ -23,6 +23,12 @@ var typeOfHousing = document.querySelector('#type');
 var minPrice = document.querySelector('#price');
 var capacity = document.querySelector('#capacity');
 var roomNubmer = document.querySelector('#room_number');
+var ROOMS = {
+  0: [2],
+  1: [1, 2],
+  2: [0, 1, 2],
+  3: [3]
+};
 
 
 function getRandomInt(min, max) {
@@ -192,14 +198,6 @@ var activation = function () {
   mapPinMain.removeEventListener('mouseup', activation);
   showPins();
 };
-
-var ROOMS = {
-  0: [2],
-  1: [1, 2],
-  2: [0, 1, 2],
-  3: [3]
-};
-
 
 var capacityShow = function (array) {
   for (var i = 0; i < capacity.length; i++) {
