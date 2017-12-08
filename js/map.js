@@ -197,33 +197,20 @@ var ROOMS = {
   0: [2],
   1: [1, 2],
   2: [0, 1, 2],
-  3: [4],
-  4: [0, 1, 2, 3]
+  3: [3]
 };
 
 
 var capacityShow = function (array) {
-  // capacity[0].hidden = !zero;
-  // capacity[1].hidden = !one;
-  // capacity[2].hidden = !two;
-  // capacity[3].hidden = !three;
-  // var i = 0;
-  // do {
-  //   i++;
-  // } while (capacity[i].hidden === true);
-  // capacity.selectedIndex = i;
-  // for (var i = 0; i <= capacity.length; i++) {
-  //   for (var j = 0; j <= array.length; j++) {
-  //     if (array[j] === i) {
-  //       capacity[i].hidden = false;
-  //       console.log(i);
-  //     } else {
-  //       // console.log(i);
-  //       capacity[i].hidden = true;
-  //     }
-  //   }
-  // }
-  // console.log(array);
+  for (var i = 0; i < capacity.length; i++) {
+    capacity[i].hidden = true;
+    for (var j = 0; j <= array.length; j++) {
+      if (array[j] === i) {
+        capacity[i].hidden = false;
+        capacity.selectedIndex = i;
+      }
+    }
+  }
 };
 
 mapPinMain.addEventListener('mouseup', activation);
