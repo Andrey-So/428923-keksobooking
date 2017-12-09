@@ -17,6 +17,19 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var noticeForm = document.querySelector('.notice__form');
 var DEFAULT_COUNT = 8;
 var previousActivePin;
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var typeOfHousing = document.querySelector('#type');
+var minPrice = document.querySelector('#price');
+var capacity = document.querySelector('#capacity');
+var roomNubmer = document.querySelector('#room_number');
+var ROOMS = {
+  0: [2],
+  1: [1, 2],
+  2: [0, 1, 2],
+  3: [3]
+};
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -186,5 +199,44 @@ var activation = function () {
   showPins();
 };
 
+var capacityShow = function (array) {
+  for (var i = 0; i < capacity.length; i++) {
+    capacity[i].hidden = ~array.indexOf(i) >= 0;
+  }
+  capacity.selectedIndex = array[0];
+};
+
 mapPinMain.addEventListener('mouseup', activation);
 mapPins.addEventListener('click', onPinClick);
+capacityShow(ROOMS[0]);
+
+timeIn.addEventListener('change', function () {
+  timeOut.selectedIndex = timeIn.selectedIndex;
+}, false);
+
+timeOut.addEventListener('change', function () {
+  timeIn.selectedIndex = timeOut.selectedIndex;
+}, false);
+
+typeOfHousing.addEventListener('change', function () {
+  switch (typeOfHousing.selectedIndex) {
+    case 0:
+      minPrice.min = 1000;
+      break;
+    case 1:
+      minPrice.min = 0;
+      break;
+    case 2:
+      minPrice.min = 5000;
+      break;
+    case 3:
+      minPrice.min = 10000;
+      break;
+    default:
+      minPrice.min = 0;
+  }
+});
+
+roomNubmer.addEventListener('change', function () {
+  capacityShow(ROOMS[roomNubmer.selectedIndex]);
+});
