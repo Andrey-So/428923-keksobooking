@@ -11,7 +11,9 @@
     ['Неуютное бунгало по колено в воде', 'bungalo']];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
-  var DEFAULT_COUNT = 8;
+  window.mapPins = document.querySelector('.map__pins');
+  window.map = document.querySelector('.map');
+  window.mapPinMain = document.querySelector('.map__pin--main');
 
   window.data = {
     getRandomInt: function (min, max) {
@@ -23,18 +25,6 @@
       var ret = array[rnd];
       array.splice(rnd, 1);
       return ret;
-    },
-
-    announcements: function () {
-      window.data.getAnnouncements(DEFAULT_COUNT);
-    },
-
-  getAnnouncements: function (thisCount) {
-      // var announcements = [];
-      for (var i = 0; i < thisCount; i++) {
-        announcements.push(window.data.getAnnouncement());
-      }
-      return announcements;
     },
 
     getFeaturesMap: function (item) {
@@ -83,15 +73,12 @@
       };
     },
 
-    getPin: function (i) {
-      var pin = document.createElement('button');
-      var data = announcements[i];
-      pin.className = 'map__pin';
-      pin.style.left = data.location.x - 20 + 'px';
-      pin.style.top = data.location.y + 40 + 'px';
-      pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
-      pin.id = i;
-      return pin;
+    getAnnouncements: function (thisCount) {
+      var announcements = [];
+      for (var i = 0; i < thisCount; i++) {
+        announcements.push(window.data.getAnnouncement());
+      }
+      return announcements;
     }
   };
 })();
