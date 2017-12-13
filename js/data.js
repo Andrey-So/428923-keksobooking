@@ -12,7 +12,7 @@
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var IMAGES = ['01', '02', '03', '04', '05', '06', '07', '08'];
   window.mapPins = document.querySelector('.map__pins');
-  window.map = document.querySelector('.map');
+  window.mapSelector = document.querySelector('.map');
   window.mapPinMain = document.querySelector('.map__pin--main');
 
   window.data = {

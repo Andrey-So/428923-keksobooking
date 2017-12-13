@@ -7,6 +7,7 @@
   var typeOfHousing = document.querySelector('#type');
   var minPrice = document.querySelector('#price');
   var roomNubmer = document.querySelector('#room_number');
+  var address = document.querySelector('#address');
   var ROOMS = {
     0: [2],
     1: [1, 2],
@@ -14,12 +15,16 @@
     3: [3]
   };
 
+  var startCoords = {
+    x: 0,
+    y: 0
+  };
+
   window.announcements = window.data.getAnnouncements(DEFAULT_COUNT);
 
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
-
   timeIn.addEventListener('change', function () {
     timeOut.selectedIndex = timeIn.selectedIndex;
   }, false);
@@ -50,4 +55,46 @@
   roomNubmer.addEventListener('change', function () {
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
+
+  window.map = {
+    onMouseDown: function (evt) {
+      evt.preventDefault();
+      startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+      };
+      document.addEventListener('mousemove', window.map.onMouseMove);
+      document.addEventListener('mouseup', window.map.onMouseUp);
+    },
+
+    onMouseMove: function (moveEvt) {
+      moveEvt.preventDefault();
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var currentCoords = {
+        x: window.mapPinMain.offsetLeft - shift.x,
+        y: window.mapPinMain.offsetTop - shift.y
+      };
+
+      if (currentCoords.y >= 100 && currentCoords.y <= 500 &&
+          currentCoords.x >= 0 && currentCoords.x <= 1200) {
+        window.mapPinMain.style.top = currentCoords.y + 'px';
+        window.mapPinMain.style.left = currentCoords.x + 'px';
+        address.value = 'x: ' + currentCoords.x + ', y: ' + currentCoords.y;
+      }
+    },
+
+    onMouseUp: function () {
+      document.removeEventListener('mousemove', window.map.onMouseMove);
+      document.removeEventListener('mouseup', window.map.onMouseUp);
+    }
+  };
 })();
