@@ -30,7 +30,7 @@
       });
       mapInfo.querySelector('.popup__features + p').textContent = thisAnnouncement.offer.description;
       mapInfo.querySelector('.popup__avatar').src = thisAnnouncement.author.avatar;
-      window.map.insertBefore(mapInfo, beforeElement);
+      window.mapSelector.insertBefore(mapInfo, beforeElement);
       document.addEventListener('keydown', window.card.closeCard);
       var popupClose = document.querySelector('.popup__close');
       popupClose.addEventListener('click', window.card.closeCard);
@@ -47,7 +47,7 @@
     removeCard: function () {
       var mapInfo = document.querySelector('.map__info');
       if (mapInfo) {
-        window.map.removeChild(mapInfo);
+        window.mapSelector.removeChild(mapInfo);
       }
     }
   };
