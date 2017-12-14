@@ -2,19 +2,22 @@
 
 (function () {
   var DEFAULT_COUNT = 8;
-  var timeIn = document.querySelector('#timein');
-  var timeOut = document.querySelector('#timeout');
-  var typeOfHousing = document.querySelector('#type');
-  var minPrice = document.querySelector('#price');
-  var roomNubmer = document.querySelector('#room_number');
-  var address = document.querySelector('#address');
   var ROOMS = {
     0: [2],
     1: [1, 2],
     2: [0, 1, 2],
     3: [3]
   };
-
+  var MIN_CURRENT_Y = 100;
+  var MAX_CURRENT_Y = 500;
+  var MIN_CURRENT_X = 0;
+  var MAX_CURRENT_X = 1200;
+  var timeIn = document.querySelector('#timein');
+  var timeOut = document.querySelector('#timeout');
+  var typeOfHousing = document.querySelector('#type');
+  var minPrice = document.querySelector('#price');
+  var roomNubmer = document.querySelector('#room_number');
+  var address = document.querySelector('#address');
   var startCoords = {
     x: 0,
     y: 0
@@ -84,8 +87,8 @@
         y: window.mapPinMain.offsetTop - shift.y
       };
 
-      if (currentCoords.y >= 100 && currentCoords.y <= 500 &&
-          currentCoords.x >= 0 && currentCoords.x <= 1200) {
+      if (currentCoords.y >= MIN_CURRENT_Y && currentCoords.y <= MAX_CURRENT_Y &&
+          currentCoords.x >= MIN_CURRENT_X && currentCoords.x <= MAX_CURRENT_X) {
         window.mapPinMain.style.top = currentCoords.y + 'px';
         window.mapPinMain.style.left = currentCoords.x + 'px';
         address.value = 'x: ' + currentCoords.x + ', y: ' + currentCoords.y;
