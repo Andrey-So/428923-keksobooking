@@ -98,6 +98,13 @@
     onMouseUp: function () {
       document.removeEventListener('mousemove', window.map.onMouseMove);
       document.removeEventListener('mouseup', window.map.onMouseUp);
+    },
+
+    syncValueWithMin: function (element, value) {
+      console.log('Yeah!');
+      element.min = value;
+      console.log(element.min);
     }
   };
+  window.synchronizefieldssss.synchronizeFields('ляляля', 'тополя', [1, 2, 3], [4, 5, 6], window.map.syncValueWithMin);
 })();
