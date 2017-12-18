@@ -1,11 +1,9 @@
 'use strict';
 
 (function () {
-  window.synchronizefields = {
-    synchronizeFields: function (srcObject, dstObject, srcSequence, dstSequence, sortingRule) {
-      if (typeof sortingRule === 'function') {
-        sortingRule([1, 2, 3, 555], 111);
-      }
+  window.synchronizeFields = function (srcObject, dstObject, srcValues, callback) {
+    if (typeof callback === 'function') {
+      callback(dstObject, srcValues[srcObject.selectedIndex]);
     }
   };
 })();
