@@ -50,12 +50,12 @@
   });
 
   var syncValueWithMin = function (dstObject, dstValue) {
-    for (var i = 0; i <= PRICES.types.length; i++) {
-      if (PRICES.types[i] === dstValue) {
+    PRICES.types.forEach(function (value, i) {
+      if (value === dstValue) {
         dstObject.value = PRICES.minPrices[i];
         dstObject.min = PRICES.minPrices[i];
       }
-    }
+    });
   };
 
   typeOfHousing.addEventListener('change', function () {
