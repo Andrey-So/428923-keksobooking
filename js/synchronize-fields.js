@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  window.synchronizeFields = function (srcObject, dstObject, srcValues, callback) {
+  window.synchronizeFields = function (fieldA, fieldB, valuesA, callback) {
     if (typeof callback === 'function') {
-      callback(dstObject, srcValues[srcObject.selectedIndex]);
+      callback(fieldB, valuesA[fieldA.selectedIndex]);
     }
   };
 })();
