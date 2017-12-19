@@ -12,6 +12,10 @@
   var MAX_CURRENT_Y = 500;
   var MIN_CURRENT_X = 0;
   var MAX_CURRENT_X = 1200;
+  var PRICES = {
+    types: ['flat', 'bungalo', 'house', 'palace'],
+    minPrices: [1000, 0, 5000, 10000]
+  };
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var typeOfHousing = document.querySelector('#type');
@@ -28,31 +32,34 @@
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
+
+  var syncValues = function (dstObject, dstValue) {
+    for (var i = 0; i < dstObject.length; i++) {
+      if (dstObject[i].value === dstValue) {
+        dstObject.selectedIndex = i;
+      }
+    }
+  };
+
   timeIn.addEventListener('change', function () {
-    timeOut.selectedIndex = timeIn.selectedIndex;
-  }, false);
+    window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
+  });
 
   timeOut.addEventListener('change', function () {
-    timeIn.selectedIndex = timeOut.selectedIndex;
-  }, false);
+    window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
+  });
+
+  var syncValueWithMin = function (dstObject, dstValue) {
+    PRICES.types.forEach(function (value, i) {
+      if (value === dstValue) {
+        dstObject.value = PRICES.minPrices[i];
+        dstObject.min = PRICES.minPrices[i];
+      }
+    });
+  };
 
   typeOfHousing.addEventListener('change', function () {
-    switch (typeOfHousing.selectedIndex) {
-      case 0:
-        minPrice.min = 1000;
-        break;
-      case 1:
-        minPrice.min = 0;
-        break;
-      case 2:
-        minPrice.min = 5000;
-        break;
-      case 3:
-        minPrice.min = 10000;
-        break;
-      default:
-        minPrice.min = 0;
-    }
+    window.synchronizeFields(typeOfHousing, minPrice, window.map.getOptionValuesInSelect(typeOfHousing), syncValueWithMin);
   });
 
   roomNubmer.addEventListener('change', function () {
@@ -98,6 +105,13 @@
     onMouseUp: function () {
       document.removeEventListener('mousemove', window.map.onMouseMove);
       document.removeEventListener('mouseup', window.map.onMouseUp);
+    },
+
+    getOptionValuesInSelect: function (select) {
+      var selectOptions = select.querySelectorAll('option');
+      return Array.prototype.map.call(selectOptions, function (obj) {
+        return obj.getAttribute('value');
+      });
     }
   };
 })();

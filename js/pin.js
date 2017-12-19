@@ -27,7 +27,7 @@
       if (evt.classList[0] === 'map__pin') {
         evt.classList.add('map__pin--active');
         if (evt.id) {
-          window.card.createCard(evt.id);
+          window.showcard.showCard(evt.id);
         }
       }
     },
