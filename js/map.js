@@ -21,6 +21,11 @@
   var minPrice = document.querySelector('#price');
   var roomNubmer = document.querySelector('#room_number');
   var address = document.querySelector('#address');
+  var submit = document.querySelector('.form__submit');
+  var title = document.querySelector('#title');
+  var typeSelected = document.querySelector('#type');
+  var capacity = document.querySelector('#capacity');
+  var description = document.querySelector('#description');
   var startCoords = {
     x: 0,
     y: 0
@@ -60,6 +65,23 @@
 
   roomNubmer.addEventListener('change', function () {
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
+  });
+
+  submit.addEventListener('click', function (evt) {
+    var allMyData = {
+      title: title.value,
+      address: address.value,
+      type: typeSelected.selectedOptions[0].innerText,
+      price: minPrice.value,
+      timeIn: timeIn.selectedOptions[0].innerText,
+      timeOut: timeOut.selectedOptions[0].innerText,
+      rooms: roomNubmer.selectedOptions[0].innerText,
+      capacity: capacity.selectedOptions[0].innerText,
+      facilities: ['dishwasher', 'wifi'],
+      description: description.value
+    };
+    evt.preventDefault();
+    window.save(allMyData);
   });
 
   function onLoad(response) {
