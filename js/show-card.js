@@ -21,6 +21,7 @@
       deleteElements.forEach(function (element, index) {
         mapFeatures.removeChild(deleteElements[index]);
       });
+      console.log(mapFeatures);
       thisOffer.features.forEach(function (feature) {
         if (feature) {
           var newLi = document.createElement('li');

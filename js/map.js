@@ -52,7 +52,6 @@
   var syncValueWithMin = function (dstObject, dstValue) {
     PRICES.types.forEach(function (value, i) {
       if (value === dstValue) {
-        dstObject.value = PRICES.minPrices[i];
         dstObject.min = PRICES.minPrices[i];
       }
     });
@@ -65,6 +64,12 @@
   roomNubmer.addEventListener('change', function () {
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
+
+  function onLoad(response) {
+    console.log(response);
+  };
+
+  window.load(onLoad, onerror);
 
   window.map = {
     onMouseDown: function (evt) {
@@ -112,6 +117,6 @@
       return Array.prototype.map.call(selectOptions, function (obj) {
         return obj.getAttribute('value');
       });
-    }
+    },
   };
 })();
