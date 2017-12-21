@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var DEFAULT_COUNT = 8;
   var ROOMS = {
     0: [2],
     1: [1, 2],
@@ -26,8 +25,6 @@
     x: 0,
     y: 0
   };
-
-  window.announcements = window.data.getAnnouncements(DEFAULT_COUNT);
 
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
@@ -66,8 +63,8 @@
   });
 
   function onLoad(response) {
-    console.log(response);
-  };
+    window.announcements = response;
+  }
 
   window.load(onLoad, onerror);
 
@@ -117,6 +114,6 @@
       return Array.prototype.map.call(selectOptions, function (obj) {
         return obj.getAttribute('value');
       });
-    },
+    }
   };
 })();
