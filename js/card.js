@@ -2,7 +2,6 @@
 
 (function () {
   var ESC_KEYCODE = 27;
-  var mapCard = document.querySelector('.map__info');
 
   window.card = {
     closeCard: function (evt) {
@@ -14,6 +13,7 @@
     },
 
     removeCard: function () {
+      var mapCard = document.querySelector('.map__info');
       if (mapCard) {
         window.mapSelector.removeChild(mapCard);
       }

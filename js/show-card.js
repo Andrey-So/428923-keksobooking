@@ -8,8 +8,6 @@
       var mapCard = document.createElement('div');
       var thisAnnouncement = window.announcements[i];
       var thisOffer = thisAnnouncement.offer;
-      var mapFeatures = mapCard.querySelector('.popup__features');
-      var deleteElements = mapCard.querySelectorAll('.feature');
       mapCard.className = 'map__info';
       mapCard.innerHTML = template[0].innerHTML;
       mapCard.querySelector('h3').textContent = thisOffer.title;
@@ -18,10 +16,11 @@
       mapCard.querySelector('h4').textContent = thisOffer.type;
       mapCard.querySelector('h4 + p').textContent = thisOffer.rooms + ' для ' + thisOffer.guests + ' гостей';
       mapCard.querySelector('h4 + p + p').textContent = 'Заезд после ' + thisOffer.checkin + ', выезд до ' + thisOffer.checkout;
+      var mapFeatures = mapCard.querySelector('.popup__features');
+      var deleteElements = mapCard.querySelectorAll('.feature');
       deleteElements.forEach(function (element, index) {
         mapFeatures.removeChild(deleteElements[index]);
       });
-      console.log(mapFeatures);
       thisOffer.features.forEach(function (feature) {
         if (feature) {
           var newLi = document.createElement('li');
