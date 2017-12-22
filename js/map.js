@@ -21,6 +21,11 @@
   var minPrice = document.querySelector('#price');
   var roomNubmer = document.querySelector('#room_number');
   var address = document.querySelector('#address');
+  var submit = document.querySelector('.form__submit');
+  var title = document.querySelector('#title');
+  var type = document.querySelector('#type');
+  var capacuty = document.querySelector('#capacity');
+  var description = document.querySelector('#description');
   var startCoords = {
     x: 0,
     y: 0
@@ -38,14 +43,6 @@
     }
   };
 
-  timeIn.addEventListener('change', function () {
-    window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
-  });
-
-  timeOut.addEventListener('change', function () {
-    window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
-  });
-
   var syncValueWithMin = function (dstObject, dstValue) {
     PRICES.types.forEach(function (value, i) {
       if (value === dstValue) {
@@ -54,12 +51,36 @@
     });
   };
 
+  timeIn.addEventListener('change', function () {
+    window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
+  });
+
+  timeOut.addEventListener('change', function () {
+    window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
+  });
+
   typeOfHousing.addEventListener('change', function () {
     window.synchronizeFields(typeOfHousing, minPrice, window.map.getOptionValuesInSelect(typeOfHousing), syncValueWithMin);
   });
 
   roomNubmer.addEventListener('change', function () {
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
+  });
+
+  submit.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    var dataToSend = {
+      title: title.value,
+      address: address.value,
+      type: type.options[type.selectedIndex].text,
+      price: minPrice.value,
+      timeIn: timeIn.options[timeIn.selectedIndex].text,
+      timeOut: timeOut.options[timeOut.selectedIndex].text,
+      rooms: roomNubmer.options[roomNubmer.selectedIndex].text,
+      capacity: capacuty.options[capacuty.selectedIndex].text,
+      description: description.value
+    };
+    window.save(dataToSend);
   });
 
   function onLoad(response) {
