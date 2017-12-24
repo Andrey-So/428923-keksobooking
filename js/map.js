@@ -23,8 +23,8 @@
   var address = document.querySelector('#address');
   var submit = document.querySelector('.form__submit');
   var title = document.querySelector('#title');
-  var typeSelected = document.querySelector('#type');
-  var capacity = document.querySelector('#capacity');
+  var type = document.querySelector('#type');
+  var capacuty = document.querySelector('#capacity');
   var description = document.querySelector('#description');
   var startCoords = {
     x: 0,
@@ -43,14 +43,6 @@
     }
   };
 
-  timeIn.addEventListener('change', function () {
-    window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
-  });
-
-  timeOut.addEventListener('change', function () {
-    window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
-  });
-
   var syncValueWithMin = function (dstObject, dstValue) {
     PRICES.types.forEach(function (value, i) {
       if (value === dstValue) {
@@ -58,6 +50,14 @@
       }
     });
   };
+
+  timeIn.addEventListener('change', function () {
+    window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
+  });
+
+  timeOut.addEventListener('change', function () {
+    window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
+  });
 
   typeOfHousing.addEventListener('change', function () {
     window.synchronizeFields(typeOfHousing, minPrice, window.map.getOptionValuesInSelect(typeOfHousing), syncValueWithMin);
@@ -68,20 +68,19 @@
   });
 
   submit.addEventListener('click', function (evt) {
-    var allMyData = {
+    evt.preventDefault();
+    var dataToSend = {
       title: title.value,
       address: address.value,
-      type: typeSelected.selectedOptions[0].innerText,
+      type: type.options[type.selectedIndex].text,
       price: minPrice.value,
-      timeIn: timeIn.selectedOptions[0].innerText,
-      timeOut: timeOut.selectedOptions[0].innerText,
-      rooms: roomNubmer.selectedOptions[0].innerText,
-      capacity: capacity.selectedOptions[0].innerText,
-      facilities: ['dishwasher', 'wifi'],
+      timeIn: timeIn.options[timeIn.selectedIndex].text,
+      timeOut: timeOut.options[timeOut.selectedIndex].text,
+      rooms: roomNubmer.options[roomNubmer.selectedIndex].text,
+      capacity: capacuty.options[capacuty.selectedIndex].text,
       description: description.value
     };
-    evt.preventDefault();
-    window.save(allMyData);
+    window.save(dataToSend);
   });
 
   function onLoad(response) {
