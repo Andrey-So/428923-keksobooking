@@ -22,15 +22,11 @@
   var roomNubmer = document.querySelector('#room_number');
   var address = document.querySelector('#address');
   var submit = document.querySelector('.form__submit');
-  var title = document.querySelector('#title');
-  var type = document.querySelector('#type');
-  var capacuty = document.querySelector('#capacity');
-  var description = document.querySelector('#description');
+  var form = document.querySelector('.notice__form');
   var startCoords = {
     x: 0,
     y: 0
   };
-
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
@@ -69,19 +65,33 @@
 
   submit.addEventListener('click', function (evt) {
     evt.preventDefault();
-    var dataToSend = {
-      title: title.value,
-      address: address.value,
-      type: type.options[type.selectedIndex].text,
-      price: minPrice.value,
-      timeIn: timeIn.options[timeIn.selectedIndex].text,
-      timeOut: timeOut.options[timeOut.selectedIndex].text,
-      rooms: roomNubmer.options[roomNubmer.selectedIndex].text,
-      capacity: capacuty.options[capacuty.selectedIndex].text,
-      description: description.value
-    };
-    window.save(dataToSend);
+    window.save(new FormData(form), onSend, onError);
   });
+
+  function onError(value) {
+    document.querySelector('main').style.filter = 'grayscale(1) blur(5px)';
+    document.querySelector('main').style.transitionDuration = '1s';
+    var node = document.createElement('button');
+    node.style = 'position: fixed; ' +
+                  'top: 50%; ' +
+                  'left: 0; ' +
+                  'z-index: 100; ' +
+                  'text-align: center; ' +
+                  'background-color: red; ' +
+                  'color: white; ' +
+                  'font-size: 30px; ' +
+                  'border: none;' +
+                  'width: 100%; ' +
+                  'height: 100px;';
+    node.textContent = value;
+    document.body.insertAdjacentElement('afterbegin', node);
+  }
+
+  function onSend() {
+    submit.style = 'background-color: green;';
+    submit.textContent = 'Отправлено';
+    form.reset();
+  }
 
   function onLoad(response) {
     window.announcements = response;

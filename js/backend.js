@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 'use strict';
 
 (function () {
@@ -18,10 +19,11 @@
   window.save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     var URL = 'https://js.dump.academy/keksobooking';
-    var output = JSON.stringify(data);
-    console.log(data, output);
+    xhr.addEventListener('load', function () {
+      (xhr.status === 200) ? onLoad('Данные успешно отправлены') : onError('Ошибка при отправке, код ' + xhr.status + '.');
+    });
     xhr.responseType = 'json';
     xhr.open('POST', URL);
-    xhr.send(output);
+    xhr.send(data);
   };
 })();
