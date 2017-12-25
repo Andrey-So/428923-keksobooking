@@ -3,13 +3,13 @@
 (function () {
   window.showcard = {
     showCard: function (i) {
-      var template = document.getElementsByTagName('template');
+      var template = document.querySelector('template');
       var beforeElement = document.querySelector('.map__filters-container');
       var mapCard = document.createElement('div');
       var thisAnnouncement = window.announcements[i];
       var thisOffer = thisAnnouncement.offer;
       mapCard.className = 'map__info';
-      mapCard.innerHTML = template[0].innerHTML;
+      mapCard.innerHTML = template.innerHTML;
       mapCard.querySelector('h3').textContent = thisOffer.title;
       mapCard.querySelector('small').textContent = thisOffer.address;
       mapCard.querySelector('.popup__price').innerHTML = thisOffer.price + ' &#x20bd;/ночь';

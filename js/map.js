@@ -71,20 +71,9 @@
   function onError(value) {
     document.querySelector('main').style.filter = 'grayscale(1) blur(5px)';
     document.querySelector('main').style.transitionDuration = '1s';
-    var node = document.createElement('button');
-    node.style = 'position: fixed; ' +
-                  'top: 50%; ' +
-                  'left: 0; ' +
-                  'z-index: 100; ' +
-                  'text-align: center; ' +
-                  'background-color: red; ' +
-                  'color: white; ' +
-                  'font-size: 30px; ' +
-                  'border: none;' +
-                  'width: 100%; ' +
-                  'height: 100px;';
-    node.textContent = value;
-    document.body.insertAdjacentElement('afterbegin', node);
+    var error = document.querySelector('.error');
+    error.style.display = 'flex';
+    error.childNodes[1].innerText = 'Ошибка при отправке ' + value + '.';
   }
 
   function onSend() {
