@@ -1,20 +1,5 @@
 'use strict';
 var URL = 'https://js.dump.academy/keksobooking';
-var STATUS = {
-  OK: 200,
-  MovedPermanently: 301,
-  MovedTemporarily: 302,
-  BadRequest: 400,
-  Unauthorized: 401,
-  Forbidden: 403,
-  NotFound: 404,
-  RequestTimeout: 408,
-  InternalServerError: 500,
-  NotImplemented: 501,
-  BadGateway: 502,
-  ServiceUnavailable: 503,
-  GatewayTimeout: 504
-};
 
 (function () {
   window.load = function (onLoad, onError) {
@@ -31,6 +16,21 @@ var STATUS = {
   };
 
   window.save = function (data, onLoad, onError) {
+    var STATUS = {
+      OK: 200,
+      MovedPermanently: 301,
+      MovedTemporarily: 302,
+      BadRequest: 400,
+      Unauthorized: 401,
+      Forbidden: 403,
+      NotFound: 404,
+      RequestTimeout: 408,
+      InternalServerError: 500,
+      NotImplemented: 501,
+      BadGateway: 502,
+      ServiceUnavailable: 503,
+      GatewayTimeout: 504
+    };
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
