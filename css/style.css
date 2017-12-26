@@ -847,3 +847,18 @@ textarea:focus
 {
     background-position: -10px -10px;
 }
+
+.error {
+  display:none;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 0px;
+  z-index: 100;
+  text-align: center;
+  background-color: red;
+  color: white;
+  font-size: 30px;
+  width: 100%;
+  height: 100px;
+}
