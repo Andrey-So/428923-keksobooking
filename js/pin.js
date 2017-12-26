@@ -1,12 +1,14 @@
 'use strict';
 
 (function () {
-  var DEFAULT_COUNT = 8;
   var previousActivePin;
+  window.mapPinMain = document.querySelector('.map__pin--main');
+  window.mapPins = document.querySelector('.map__pins');
+  window.mapSelector = document.querySelector('.map');
 
   window.pin = {
     showPins: function () {
-      for (var i = 0; i < DEFAULT_COUNT; i++) {
+      for (var i = 0; i < window.announcements.length; i++) {
         var mapPin = window.pin.getPin(i);
         window.mapPins.appendChild(mapPin);
       }

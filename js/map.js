@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var DEFAULT_COUNT = 8;
   var ROOMS = {
     0: [2],
     1: [1, 2],
@@ -22,13 +21,12 @@
   var minPrice = document.querySelector('#price');
   var roomNubmer = document.querySelector('#room_number');
   var address = document.querySelector('#address');
+  var submit = document.querySelector('.form__submit');
+  var form = document.querySelector('.notice__form');
   var startCoords = {
     x: 0,
     y: 0
   };
-
-  window.announcements = window.data.getAnnouncements(DEFAULT_COUNT);
-
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
@@ -41,6 +39,14 @@
     }
   };
 
+  var syncValueWithMin = function (dstObject, dstValue) {
+    PRICES.types.forEach(function (value, i) {
+      if (value === dstValue) {
+        dstObject.min = PRICES.minPrices[i];
+      }
+    });
+  };
+
   timeIn.addEventListener('change', function () {
     window.synchronizeFields(timeIn, timeOut, window.map.getOptionValuesInSelect(timeIn), syncValues);
   });
@@ -49,15 +55,6 @@
     window.synchronizeFields(timeOut, timeIn, window.map.getOptionValuesInSelect(timeOut), syncValues);
   });
 
-  var syncValueWithMin = function (dstObject, dstValue) {
-    PRICES.types.forEach(function (value, i) {
-      if (value === dstValue) {
-        dstObject.value = PRICES.minPrices[i];
-        dstObject.min = PRICES.minPrices[i];
-      }
-    });
-  };
-
   typeOfHousing.addEventListener('change', function () {
     window.synchronizeFields(typeOfHousing, minPrice, window.map.getOptionValuesInSelect(typeOfHousing), syncValueWithMin);
   });
@@ -65,6 +62,31 @@
   roomNubmer.addEventListener('change', function () {
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
+
+  submit.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.save(new FormData(form), onSend, onError);
+  });
+
+  function onError(value) {
+    document.querySelector('main').style.filter = 'grayscale(1) blur(5px)';
+    document.querySelector('main').style.transitionDuration = '1s';
+    var error = document.querySelector('.error');
+    error.style.display = 'flex';
+    error.childNodes[1].innerText = 'Ошибка при отправке ' + value + '.';
+  }
+
+  function onSend() {
+    submit.style = 'background-color: green;';
+    submit.textContent = 'Отправлено';
+    form.reset();
+  }
+
+  function onLoad(response) {
+    window.announcements = response;
+  }
+
+  window.load(onLoad, onerror);
 
   window.map = {
     onMouseDown: function (evt) {
