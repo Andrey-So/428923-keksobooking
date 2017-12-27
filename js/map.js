@@ -88,7 +88,6 @@
 
   function filterPins() {
     var filter = [];
-    var filtredAnnouncements = [];
     var counter = 0;
     deleteAllPins();
     selectFilters.forEach(function (value) {
@@ -109,12 +108,19 @@
       window.pin.showPins(window.ANNOUNCEMENTS);
     }
 
-    window.ANNOUNCEMENTS.forEach(function (value) {
-      if (filter[0] === value.offer.type) {
-        filtredAnnouncements.push(value);
-      }
+    function checkType(offerType, filterType) {
+
+    }
+
+    window.filtredAnnouncements = window.ANNOUNCEMENTS.filter(function (announcement) {
+      return announcement.offer.type === filter[0];
     });
+
+    window.card.removeCard();
+    console.log(filtredAnnouncements);
+    window.pin.showPins(window.filtredAnnouncements);
   }
+
 
   function deleteAllPins() {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
@@ -139,8 +145,7 @@
 
   function onLoad(response) {
     window.ANNOUNCEMENTS = response;
-    // window.ANNOUNCEMENTS = response;
-    console.log(window.ANNOUNCEMENTS);
+    window.filtredAnnouncements = window.ANNOUNCEMENTS.slice();
   }
 
   window.load(onLoad, onerror);

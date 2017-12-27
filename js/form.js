@@ -9,7 +9,7 @@
         window.mapSelector.classList.remove('map--faded');
         noticeForm.classList.remove('notice__form--disabled');
         window.mapPinMain.removeEventListener('mouseup', window.form.globalActivation);
-        window.pin.showPins(window.ANNOUNCEMENTS);
+        window.pin.showPins(window.filtredAnnouncements);
         window.mapPinMain.addEventListener('mousedown', window.map.onMouseDown);
       }
     },
