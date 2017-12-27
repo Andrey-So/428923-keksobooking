@@ -7,16 +7,15 @@
   window.mapSelector = document.querySelector('.map');
 
   window.pin = {
-    showPins: function () {
-      for (var i = 0; i < window.announcements.length; i++) {
-        var mapPin = window.pin.getPin(i);
+    showPins: function (data) {
+      data.forEach(function (value, i) {
+        var mapPin = window.pin.getPin(value, i);
         window.mapPins.appendChild(mapPin);
-      }
+      });
     },
 
-    getPin: function (i) {
+    getPin: function (data, i) {
       var pin = document.createElement('button');
-      var data = window.announcements[i];
       pin.className = 'map__pin';
       pin.style.left = data.location.x - 20 + 'px';
       pin.style.top = data.location.y + 40 + 'px';

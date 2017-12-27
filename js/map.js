@@ -15,6 +15,9 @@
     types: ['flat', 'bungalo', 'house', 'palace'],
     minPrices: [1000, 0, 5000, 10000]
   };
+  var LOW_PRICE = 10000;
+  var HIGH_PRICE = 50000;
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var typeOfHousing = document.querySelector('#type');
@@ -23,6 +26,9 @@
   var address = document.querySelector('#address');
   var submit = document.querySelector('.form__submit');
   var form = document.querySelector('.notice__form');
+  var mapFilters = document.querySelector('.map__filters');
+  var checkboxFilters = mapFilters.querySelectorAll('input[type="checkbox"]');
+  var selectFilters = mapFilters.querySelectorAll('select');
   var startCoords = {
     x: 0,
     y: 0
@@ -68,6 +74,55 @@
     window.save(new FormData(form), onSend, onError);
   });
 
+  selectFilters.forEach(function (value) {
+    value.addEventListener('change', function () {
+      filterPins();
+    });
+  });
+
+  checkboxFilters.forEach(function (value) {
+    value.addEventListener('change', function () {
+      filterPins();
+    });
+  });
+
+  function filterPins() {
+    var filter = [];
+    var filtredAnnouncements = [];
+    var counter = 0;
+    deleteAllPins();
+    selectFilters.forEach(function (value) {
+      filter.push(value.selectedOptions[0].value);
+      if (value.selectedOptions[0].value === 'any') {
+        counter++;
+      }
+    });
+
+    checkboxFilters.forEach(function (value, i) {
+      if (value.checked) {
+        filter.push(FEATURES[i]);
+        counter++;
+      }
+    });
+
+    if (counter === 10) {
+      window.pin.showPins(window.ANNOUNCEMENTS);
+    }
+
+    window.ANNOUNCEMENTS.forEach(function (value) {
+      if (filter[0] === value.offer.type) {
+        filtredAnnouncements.push(value);
+      }
+    });
+  }
+
+  function deleteAllPins() {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+  }
+
   function onError(value) {
     document.querySelector('main').style.filter = 'grayscale(1) blur(5px)';
     document.querySelector('main').style.transitionDuration = '1s';
@@ -83,7 +138,9 @@
   }
 
   function onLoad(response) {
-    window.announcements = response;
+    window.ANNOUNCEMENTS = response;
+    // window.ANNOUNCEMENTS = response;
+    console.log(window.ANNOUNCEMENTS);
   }
 
   window.load(onLoad, onerror);
