@@ -33,6 +33,8 @@
     x: 0,
     y: 0
   };
+  var DEBOUCE_TIMEOUT = 500;
+  var prevTimer;
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
@@ -76,48 +78,63 @@
 
   selectFilters.forEach(function (value) {
     value.addEventListener('change', function () {
-      filterPins();
+      window.clearTimeout(prevTimer);
+      prevTimer = window.setTimeout(function () {
+        filterPins();
+      }, DEBOUCE_TIMEOUT);
     });
   });
 
   checkboxFilters.forEach(function (value) {
     value.addEventListener('change', function () {
-      filterPins();
+      window.clearTimeout(prevTimer);
+      prevTimer = window.setTimeout(function () {
+        filterPins();
+      }, DEBOUCE_TIMEOUT);
     });
   });
 
   function filterPins() {
     var filter = [];
-    var counter = 0;
     deleteAllPins();
     selectFilters.forEach(function (value) {
       filter.push(value.selectedOptions[0].value);
-      if (value.selectedOptions[0].value === 'any') {
-        counter++;
-      }
     });
 
     checkboxFilters.forEach(function (value, i) {
       if (value.checked) {
         filter.push(FEATURES[i]);
-        counter++;
       }
     });
 
-    if (counter === 10) {
-      window.pin.showPins(window.ANNOUNCEMENTS);
+    function checkType(announcementType, filterType) {
+      return filterType === 'any' || filterType === announcementType;
     }
 
-    function checkType(offerType, filterType) {
+    function getCostRange(announcementPrice) {
+      if (announcementPrice < LOW_PRICE) {
+        return 'low';
+      } else if (announcementPrice >= HIGH_PRICE) {
+        return 'high';
+      } else {
+        return 'middle';
+      }
+    }
 
+    function checkFeatures(announcementFeatures, filterFeatures) {
+      return (filterFeatures.filter(function (value) {
+        return announcementFeatures.includes(value);
+      }).length === filterFeatures.length);
     }
 
     window.filtredAnnouncements = window.ANNOUNCEMENTS.filter(function (announcement) {
-      return announcement.offer.type === filter[0];
+      return checkType(announcement.offer.type, filter[0]) &&
+        checkType(getCostRange(announcement.offer.price), filter[1]) &&
+        checkType(announcement.offer.rooms.toString(), filter[2]) &&
+        checkType(announcement.offer.guests.toString(), filter[3]) &&
+        checkFeatures(announcement.offer.features, filter.slice(4));
     });
-
     window.card.removeCard();
-    console.log(filtredAnnouncements);
     window.pin.showPins(window.filtredAnnouncements);
   }
 

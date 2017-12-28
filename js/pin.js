@@ -8,7 +8,8 @@
 
   window.pin = {
     showPins: function (data) {
-      data.forEach(function (value, i) {
+      var five = data.slice(0, 5);
+      five.forEach(function (value, i) {
         var mapPin = window.pin.getPin(value, i);
         window.mapPins.appendChild(mapPin);
       });
