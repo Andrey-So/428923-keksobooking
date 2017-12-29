@@ -80,7 +80,7 @@
     window.save(new FormData(form), onSend, onError);
   });
 
-  selectFilters.forEach(function (value) {
+  Array.prototype.map.call(selectFilters, function (value) {
     value.addEventListener('change', function () {
       window.clearTimeout(prevTimer);
       prevTimer = window.setTimeout(function () {
