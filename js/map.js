@@ -17,6 +17,9 @@
   };
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
+  var LOW_VALUE = 'low';
+  var MIDDLE_VALUE = 'middle';
+  var HIGH_VALUE = 'high';
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
@@ -35,6 +38,7 @@
   };
   var DEBOUCE_TIMEOUT = 500;
   var prevTimer;
+  var filter = [];
   window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
@@ -94,9 +98,28 @@
     });
   });
 
-  function filterPins() {
-    var filter = [];
-    deleteAllPins();
+  var checkType = function (announcementType, filterType) {
+    return filterType === 'any' || filterType === announcementType;
+  };
+
+  var getCostRange = function (announcementPrice) {
+    if (announcementPrice < LOW_PRICE) {
+      return LOW_VALUE;
+    } else if (announcementPrice >= HIGH_PRICE) {
+      return HIGH_VALUE;
+    } else {
+      return MIDDLE_VALUE;
+    }
+  };
+
+  var checkFeatures = function (announcementFeatures, filterFeatures) {
+    return (filterFeatures.filter(function (value) {
+      return announcementFeatures.includes(value);
+    }).length === filterFeatures.length);
+  };
+
+  var createFilter = function () {
+    filter = [];
     selectFilters.forEach(function (value) {
       filter.push(value.selectedOptions[0].value);
     });
@@ -106,27 +129,17 @@
         filter.push(FEATURES[i]);
       }
     });
+  };
 
-    function checkType(announcementType, filterType) {
-      return filterType === 'any' || filterType === announcementType;
-    }
+  function filterPins() {
+    deleteAllPins();
+    createFilter();
+    getFiltredArray();
+    window.card.removeCard();
+    window.pin.showPins(window.filtredAnnouncements);
+  }
 
-    function getCostRange(announcementPrice) {
-      if (announcementPrice < LOW_PRICE) {
-        return 'low';
-      } else if (announcementPrice >= HIGH_PRICE) {
-        return 'high';
-      } else {
-        return 'middle';
-      }
-    }
-
-    function checkFeatures(announcementFeatures, filterFeatures) {
-      return (filterFeatures.filter(function (value) {
-        return announcementFeatures.includes(value);
-      }).length === filterFeatures.length);
-    }
-
+  function getFiltredArray() {
     window.filtredAnnouncements = window.ANNOUNCEMENTS.filter(function (announcement) {
       return checkType(announcement.offer.type, filter[0]) &&
         checkType(getCostRange(announcement.offer.price), filter[1]) &&
@@ -134,10 +147,7 @@
         checkType(announcement.offer.guests.toString(), filter[3]) &&
         checkFeatures(announcement.offer.features, filter.slice(4));
     });
-    window.card.removeCard();
-    window.pin.showPins(window.filtredAnnouncements);
   }
-
 
   function deleteAllPins() {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
