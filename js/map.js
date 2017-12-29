@@ -131,29 +131,18 @@
     });
   };
 
-  function filterPins() {
-    deleteAllPins();
-    createFilter();
-    getFiltredArray();
-    window.card.removeCard();
-    window.pin.showPins(window.filtredAnnouncements);
-  }
-
-  function getFiltredArray() {
-    window.filtredAnnouncements = window.ANNOUNCEMENTS.filter(function (announcement) {
-      return checkType(announcement.offer.type, filter[0]) &&
-        checkType(getCostRange(announcement.offer.price), filter[1]) &&
-        checkType(announcement.offer.rooms.toString(), filter[2]) &&
-        checkType(announcement.offer.guests.toString(), filter[3]) &&
-        checkFeatures(announcement.offer.features, filter.slice(4));
-    });
-  }
-
-  function deleteAllPins() {
+  var deleteAllPins = function () {
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
     pins.forEach(function (pin) {
       pin.remove();
     });
+  };
+
+  function filterPins() {
+    deleteAllPins();
+    createFilter();
+    window.card.removeCard();
+    window.pin.showPins(window.map.filtredAnnouncements());
   }
 
   function onError(value) {
@@ -172,7 +161,6 @@
 
   function onLoad(response) {
     window.ANNOUNCEMENTS = response;
-    window.filtredAnnouncements = window.ANNOUNCEMENTS.slice();
   }
 
   window.load(onLoad, onerror);
@@ -222,6 +210,16 @@
       var selectOptions = select.querySelectorAll('option');
       return Array.prototype.map.call(selectOptions, function (obj) {
         return obj.getAttribute('value');
+      });
+    },
+
+    filtredAnnouncements: function () {
+      return window.ANNOUNCEMENTS.filter(function (announcement) {
+        return checkType(announcement.offer.type, filter[0]) &&
+          checkType(getCostRange(announcement.offer.price), filter[1]) &&
+          checkType(announcement.offer.rooms.toString(), filter[2]) &&
+          checkType(announcement.offer.guests.toString(), filter[3]) &&
+          checkFeatures(announcement.offer.features, filter.slice(4));
       });
     }
   };

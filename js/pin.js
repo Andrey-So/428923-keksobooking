@@ -17,9 +17,10 @@
 
     getPin: function (data, i) {
       var pin = document.createElement('button');
+      var coords = data.location;
       pin.className = 'map__pin';
-      pin.style.left = data.location.x - 20 + 'px';
-      pin.style.top = data.location.y + 40 + 'px';
+      pin.style.left = coords.x - 20 + 'px';
+      pin.style.top = coords.y + 40 + 'px';
       pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
       pin.id = i;
       return pin;

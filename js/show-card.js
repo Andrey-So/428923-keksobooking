@@ -6,7 +6,7 @@
       var template = document.querySelector('template');
       var beforeElement = document.querySelector('.map__filters-container');
       var mapCard = document.createElement('div');
-      var thisAnnouncement = window.filtredAnnouncements[i];
+      var thisAnnouncement = window.map.filtredAnnouncements()[i];
       var thisOffer = thisAnnouncement.offer;
       mapCard.className = 'map__info';
       mapCard.innerHTML = template.innerHTML;
