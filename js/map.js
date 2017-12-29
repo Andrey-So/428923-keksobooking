@@ -80,7 +80,7 @@
     window.save(new FormData(form), onSend, onError);
   });
 
-  Array.prototype.map.call(selectFilters, function (value) {
+  selectFilters.forEach(function (value) {
     value.addEventListener('change', function () {
       window.clearTimeout(prevTimer);
       prevTimer = window.setTimeout(function () {
@@ -119,9 +119,8 @@
   };
 
   var createFilter = function () {
-    filter = [];
-    selectFilters.forEach(function (value) {
-      filter.push(value.selectedOptions[0].value);
+    filter = Array.prototype.map.call(selectFilters, function (value) {
+      return value.selectedOptions[0].value;
     });
 
     checkboxFilters.forEach(function (value, i) {
