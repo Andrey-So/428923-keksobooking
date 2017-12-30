@@ -21,7 +21,7 @@
       pin.className = 'map__pin';
       pin.style.left = coords.x - 20 + 'px';
       pin.style.top = coords.y + 40 + 'px';
-      pin.innerHTML = '<img src=\"' + data.author.avatar + '\" width=\"40\" height=\"40\" draggable=\"false\">';
+      pin.innerHTML = '<img src="' + data.author.avatar + '" width="40" height="40" draggable="false">';
       pin.id = i;
       return pin;
     },

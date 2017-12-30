@@ -39,7 +39,8 @@
   var DEBOUCE_TIMEOUT = 500;
   var prevTimer;
   var filter = [];
-  window.mapPinMain.addEventListener('mouseup', window.form.globalActivation);
+  var mainPin = window.mapPinMain;
+  mainPin.addEventListener('mouseup', window.form.globalActivation);
   window.mapPins.addEventListener('click', window.pin.onPinClick);
   window.form.capacityShow(ROOMS[0]);
 
@@ -98,6 +99,8 @@
     });
   });
 
+  createFilter();
+
   var checkType = function (announcementType, filterType) {
     return filterType === 'any' || filterType === announcementType;
   };
@@ -118,7 +121,14 @@
     }).length === filterFeatures.length);
   };
 
-  var createFilter = function () {
+  var deleteAllPins = function () {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+  };
+
+  function createFilter() {
     filter = Array.prototype.map.call(selectFilters, function (value) {
       return value.selectedOptions[0].value;
     });
@@ -128,14 +138,7 @@
         filter.push(FEATURES[i]);
       }
     });
-  };
-
-  var deleteAllPins = function () {
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main');
-    pins.forEach(function (pin) {
-      pin.remove();
-    });
-  };
+  }
 
   function filterPins() {
     deleteAllPins();
@@ -144,12 +147,20 @@
     window.pin.showPins(window.map.filtredAnnouncements());
   }
 
+  var errorMessageClose = function () {
+    document.querySelector('main').style.filter = 'none';
+    var error = document.querySelector('.error');
+    error.style.display = 'none';
+    error.removeEventListener('click', errorMessageClose);
+  };
+
   function onError(value) {
     document.querySelector('main').style.filter = 'grayscale(1) blur(5px)';
     document.querySelector('main').style.transitionDuration = '1s';
     var error = document.querySelector('.error');
     error.style.display = 'flex';
     error.childNodes[1].innerText = 'Ошибка при отправке ' + value + '.';
+    error.addEventListener('click', errorMessageClose);
   }
 
   function onSend() {
@@ -188,14 +199,14 @@
       };
 
       var currentCoords = {
-        x: window.mapPinMain.offsetLeft - shift.x,
-        y: window.mapPinMain.offsetTop - shift.y
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
       };
 
       if (currentCoords.y >= MIN_CURRENT_Y && currentCoords.y <= MAX_CURRENT_Y &&
         currentCoords.x >= MIN_CURRENT_X && currentCoords.x <= MAX_CURRENT_X) {
-        window.mapPinMain.style.top = currentCoords.y + 'px';
-        window.mapPinMain.style.left = currentCoords.x + 'px';
+        mainPin.style.top = currentCoords.y + 'px';
+        mainPin.style.left = currentCoords.x + 'px';
         address.value = 'x: ' + currentCoords.x + ', y: ' + currentCoords.y;
       }
     },
