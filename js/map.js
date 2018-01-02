@@ -233,4 +233,5 @@
       });
     }
   };
+  mainPin.addEventListener('mousedown', window.map.onMouseDown);
 })();
