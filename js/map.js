@@ -94,16 +94,8 @@
       errorSwitch(title, false);
       errorSwitch(address, false);
     } else {
-      if (isTitleValid) {
-        errorSwitch(title, false);
-      } else {
-        errorSwitch(title, true);
-      }
-      if (isAddressValid) {
-        errorSwitch(address, false);
-      } else {
-        errorSwitch(address, true);
-      }
+      errorSwitch(title, !isTitleValid);
+      errorSwitch(address, !isAddressValid);
     }
   });
 
