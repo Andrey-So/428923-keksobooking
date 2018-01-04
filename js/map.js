@@ -77,7 +77,7 @@
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
 
-  var errorStyle = function (obj, status) {
+  var errorSwitch = function (obj, status) {
     status ? obj.classList.add('input__error') : obj.classList.remove('input__error');
   };
 
@@ -87,11 +87,11 @@
     var isAddressValid = (address.value.length !== 0);
     if (isTitleValid && isAddressValid) {
       window.save(new FormData(form), onSend, onError);
-      errorStyle(title, false);
-      errorStyle(address, false);
+      errorSwitch(title, false);
+      errorSwitch(address, false);
     } else {
-      !isTitleValid ? errorStyle(title, true) : errorStyle(title, false);
-      !isAddressValid ? errorStyle(address, true) : errorStyle(address, false);
+      !isTitleValid ? errorSwitch(title, true) : errorSwitch(title, false);
+      !isAddressValid ? errorSwitch(address, true) : errorSwitch(address, false);
     }
   });
 
