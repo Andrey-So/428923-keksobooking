@@ -78,7 +78,11 @@
   });
 
   var errorSwitch = function (obj, status) {
-    status ? obj.classList.add('input__error') : obj.classList.remove('input__error');
+    if (status) {
+      obj.classList.add('input__error');
+    } else {
+      obj.classList.remove('input__error');
+    }
   };
 
   submit.addEventListener('click', function (evt) {
@@ -90,8 +94,16 @@
       errorSwitch(title, false);
       errorSwitch(address, false);
     } else {
-      !isTitleValid ? errorSwitch(title, true) : errorSwitch(title, false);
-      !isAddressValid ? errorSwitch(address, true) : errorSwitch(address, false);
+      if (isTitleValid) {
+        errorSwitch(title, false);
+      } else {
+        errorSwitch(title, true);
+      }
+      if (isAddressValid) {
+        errorSwitch(address, false);
+      } else {
+        errorSwitch(address, true);
+      }
     }
   });
 
