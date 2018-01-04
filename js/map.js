@@ -91,8 +91,8 @@
     var isAddressValid = (address.value.length !== 0);
     if (isTitleValid && isAddressValid) {
       window.save(new FormData(form), onSend, onError);
-      errorSwitch(title, false);
-      errorSwitch(address, false);
+      errorSwitch(title);
+      errorSwitch(address);
     } else {
       errorSwitch(title, !isTitleValid);
       errorSwitch(address, !isAddressValid);
