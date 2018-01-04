@@ -27,6 +27,7 @@
   var minPrice = document.querySelector('#price');
   var roomNubmer = document.querySelector('#room_number');
   var address = document.querySelector('#address');
+  var title = document.querySelector('#title');
   var submit = document.querySelector('.form__submit');
   var form = document.querySelector('.notice__form');
   var mapFilters = document.querySelector('.map__filters');
@@ -77,8 +78,11 @@
   });
 
   submit.addEventListener('click', function (evt) {
+    var check = (title.checkValidity() && address.value.length !== 0);
     evt.preventDefault();
-    window.save(new FormData(form), onSend, onError);
+    if (check) {
+      window.save(new FormData(form), onSend, onError);
+    }
   });
 
   selectFilters.forEach(function (value) {
