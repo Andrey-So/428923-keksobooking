@@ -77,12 +77,8 @@
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
 
-  var errorStyleOn = function (obj) {
-    obj.style.boxShadow = '0 0 4px 1px #ff6547';
-  };
-
-  var errorStyleOff = function (obj) {
-    obj.style.boxShadow = 'none';
+  var errorStyle = function (obj, status) {
+    status ? obj.classList.add('input__error') : obj.classList.remove('input__error');
   };
 
   submit.addEventListener('click', function (evt) {
@@ -91,11 +87,11 @@
     var isAddressValid = (address.value.length !== 0);
     if (isTitleValid && isAddressValid) {
       window.save(new FormData(form), onSend, onError);
-      errorStyleOff(title);
-      errorStyleOff(address);
+      errorStyle(title, false);
+      errorStyle(address, false);
     } else {
-      !isTitleValid ? errorStyleOn(title) : errorStyleOff(title);
-      !isAddressValid ? errorStyleOn(address) : errorStyleOff(address);
+      !isTitleValid ? errorStyle(title, true) : errorStyle(title, false);
+      !isAddressValid ? errorStyle(address, true) : errorStyle(address, false);
     }
   });
 

@@ -862,3 +862,7 @@ textarea:focus
   width: 100%;
   height: 100px;
 }
+
+.input__error {
+  box-shadow: 0 0 4px 1px #ff6547;
+}
