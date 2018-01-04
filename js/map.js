@@ -77,11 +77,25 @@
     window.form.capacityShow(ROOMS[roomNubmer.selectedIndex]);
   });
 
+  var errorStyleOn = function (obj) {
+    obj.style.boxShadow = '0 0 4px 1px #ff6547';
+  };
+
+  var errorStyleOff = function (obj) {
+    obj.style.boxShadow = 'none';
+  };
+
   submit.addEventListener('click', function (evt) {
-    var check = (title.checkValidity() && address.value.length !== 0);
     evt.preventDefault();
-    if (check) {
+    var isTitleValid = title.checkValidity();
+    var isAddressValid = (address.value.length !== 0);
+    if (isTitleValid && isAddressValid) {
       window.save(new FormData(form), onSend, onError);
+      errorStyleOff(title);
+      errorStyleOff(address);
+    } else {
+      !isTitleValid ? errorStyleOn(title) : errorStyleOff(title);
+      !isAddressValid ? errorStyleOn(address) : errorStyleOff(address);
     }
   });
 
