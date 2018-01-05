@@ -7,15 +7,15 @@
   window.mapSelector = document.querySelector('.map');
 
   window.pin = {
-    showPins: function (data) {
+    show: function (data) {
       var five = data.slice(0, 5);
       five.forEach(function (value, i) {
-        var mapPin = window.pin.getPin(value, i);
+        var mapPin = window.pin.get(value, i);
         window.mapPins.appendChild(mapPin);
       });
     },
 
-    getPin: function (data, i) {
+    get: function (data, i) {
       var pin = document.createElement('button');
       var coords = data.location;
       pin.className = 'map__pin';
@@ -26,7 +26,7 @@
       return pin;
     },
 
-    activatePin: function (evt) {
+    activate: function (evt) {
       if (evt.classList[0] === 'map__pin') {
         evt.classList.add('map__pin--active');
         if (evt.id) {
@@ -35,25 +35,23 @@
       }
     },
 
-    deactivatePin: function () {
+    deactivate: function () {
       if (previousActivePin) {
         previousActivePin.remove('map__pin--active');
-        window.card.removeCard();
+        window.card.remove();
       }
     },
 
-    onPinClick: function (evt) {
+    onClick: function (evt) {
       var currentActivePin;
       if (evt.target.localName === 'img') {
         currentActivePin = evt.target.parentElement;
       } else {
         currentActivePin = evt.target;
       }
-      window.pin.deactivatePin();
-      window.pin.activatePin(currentActivePin);
+      window.pin.deactivate();
+      window.pin.activate(currentActivePin);
       previousActivePin = currentActivePin.classList;
     }
   };
 })();
-
-

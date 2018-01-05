@@ -42,7 +42,7 @@
   var filter = [];
   var mainPin = window.mapPinMain;
   mainPin.addEventListener('mouseup', window.form.globalActivation);
-  window.mapPins.addEventListener('click', window.pin.onPinClick);
+  window.mapPins.addEventListener('click', window.pin.onClick);
   window.form.capacityShow(ROOMS[0]);
 
   var syncValues = function (dstObject, dstValue) {
@@ -161,8 +161,8 @@
   function filterPins() {
     deleteAllPins();
     createFilter();
-    window.card.removeCard();
-    window.pin.showPins(window.map.filtredAnnouncements());
+    window.card.remove();
+    window.pin.show(window.map.filtredAnnouncements());
   }
 
   var errorMessageClose = function () {

@@ -31,9 +31,9 @@
       mapCard.querySelector('.popup__features + p').textContent = thisOffer.description;
       mapCard.querySelector('.popup__avatar').src = thisAnnouncement.author.avatar;
       window.mapSelector.insertBefore(mapCard, beforeElement);
-      document.addEventListener('keydown', window.card.closeCard);
+      document.addEventListener('keydown', window.card.close);
       var popupClose = document.querySelector('.popup__close');
-      popupClose.addEventListener('click', window.card.closeCard);
+      popupClose.addEventListener('click', window.card.close);
     }
   };
 })();
